@@ -18,8 +18,12 @@ def create_app():
     db.init_app(app)
     jwt.init_app(app)
 
-    # Register Blueprints (for routes, if you plan to use them)
-    from app.routes import main as main_blueprint
+    # Import models so they are registered with SQLAlchemy
+    with app.app_context():
+        from app.models import User, Account, Transaction
+
+    # Register Blueprints (for routes)
+    from app.routes.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     return app
